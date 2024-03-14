@@ -4,7 +4,7 @@ export interface ComponentMetricDocument extends Document {
   componentID: string;
   value: number;
   status: "active" | "inactive";
-  type: "input" | "output" | "storage";
+  type: "input" | "output" | "storage" | "import";
   from: Date;
   to: Date;
 }
@@ -13,7 +13,7 @@ interface ComponentMetric {
   componentID: string;
   value: number;
   status: "active" | "inactive";
-  type: "input" | "output" | "storage";
+  type: "input" | "output" | "storage" | "import";
   from: Date;
   to: Date;
 }
@@ -22,7 +22,7 @@ export interface ComponentMetricInstantDocument extends Document {
   componentID: string;
   value: number;
   status: "active" | "inactive";
-  type: "input" | "output" | "storage";
+  type: "input" | "output" | "storage" | "import";
   time: Date;
 }
 
@@ -30,7 +30,7 @@ interface ComponentMetricInstant {
   componentID: string;
   value: number;
   status: "active" | "inactive";
-  type: "input" | "output" | "storage";
+  type: "input" | "output" | "storage" | "import";
   time: Date;
 }
 
@@ -52,7 +52,7 @@ const componentMetricInstantSchema = new Schema<ComponentMetricInstant>(
     },
     type: {
       type: String,
-      enum: ["input", "output", "storage"],
+      enum: ["input", "output", "storage", "import"],
       required: true,
     },
     time: {
@@ -80,7 +80,7 @@ const componentMetricSchema = new Schema<ComponentMetric>(
     },
     type: {
       type: String,
-      enum: ["input", "output", "storage"],
+      enum: ["input", "output", "storage", "import"],
       required: true,
     },
     from: {

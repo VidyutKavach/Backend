@@ -154,7 +154,6 @@ const create_metric_socket = async (data: any) => {
         await existingDailyMetric.save();
       }
     }
-    console.log("metric creation success");
     return;
   } catch (err) {
     console.error(err);

@@ -1,6 +1,8 @@
 import http from "http";
 import app from "./app";
 import { Server as SocketServer } from "socket.io";
+import { get_dashboard } from "./controllers/dashboard";
+import { grid_monitor } from "./controllers/componentController";
 
 const server = http.createServer(app);
 let io: SocketServer;
@@ -48,6 +50,13 @@ app.get("/", async (req, res) => {
     message: "Connected to the Server",
   });
 });
+
+setTimeout(async () => {
+  const dashboard = await get_dashboard();
+  io.emit(JSON.stringify(dashboard));
+  const grid_status = await grid_monitor();
+  io.emit("grid_monitor", grid_status);
+}, 60000); //1 minute
 
 // Middleware for handling 404 errors
 app.use((req, res, next) => {

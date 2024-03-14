@@ -7,6 +7,7 @@ import { json, urlencoded } from "body-parser";
 import rateLimit from "express-rate-limit";
 import logger from "morgan";
 import router from "./router/index";
+
 require("./config/mqtt");
 
 const app = express();

@@ -4,32 +4,25 @@ import fs from "fs";
 dotenv.config();
 import { create_metric_socket } from "../controllers/metricController";
 
-// MQTT broker URL
-const brokerUrl = process.env.BROKER_URL || "";
-
 // MQTT client options
 const options: mqtt.IClientOptions = {
   clientId: "main-server",
   clean: true,
   connectTimeout: 4000,
   keepalive: 60,
-  username: "vidyutkavach",
-  password: "Ka8J12pH12vG",
+  username: process.env.BROKER_USERNAME,
+  password: process.env.BROKER_PASS,
   reconnectPeriod: 2000,
-  rejectUnauthorized: false,
-  ca: fs.readFileSync("./src/config/certificates/ca.crt"),
-  key: fs.readFileSync("./src/config/certificates/client.key"),
-  cert: fs.readFileSync("./src/config/certificates/client.crt"),
 };
 
 // Create MQTT client
-const client: MqttClient = mqtt.connect(brokerUrl, options);
+const client: MqttClient = mqtt.connect(process.env.BROKER_URL || "", options);
 
 // MQTT client event handlers
 client.on("connect", () => {
   console.log("Connected to MQTT broker");
   // Subscribe to a topic
-  client.subscribe("test", (err) => {
+  client.subscribe("iot_data", (err) => {
     if (err) {
       console.error("Subscription error:", err);
     } else {
@@ -39,7 +32,6 @@ client.on("connect", () => {
 });
 
 client.on("message", (topic, message) => {
-  console.log(`Received message on topic ${topic}: ${message.toString()}`);
   create_metric_socket(message);
 });
 

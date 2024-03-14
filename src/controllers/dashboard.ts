@@ -59,7 +59,6 @@ const get_grid_status = async () => {
         },
       },
     ]);
-    console.log(result);
 
     const maxStorageCapacity = await Component.aggregate([
       {
@@ -85,12 +84,10 @@ const get_grid_status = async () => {
         },
       },
     ]);
-    console.log("maxStorageCapacity", maxStorageCapacity);
 
     const totalCapacity = maxStorageCapacity[0].totalStorageCapacity;
 
     const storageType = result.find((item) => item._id === "storage");
-    console.log(storageType);
 
     let dividedValue = 0;
     if (storageType) {
@@ -273,13 +270,6 @@ const get_dashboard = async () => {
     const active_components = active_components_response
       ? active_components_response.data
       : {};
-    const ids = "active";
-    const firewall = "active";
-    const honeypot = {
-      total: 3,
-      active: 3,
-      detections: 5,
-    };
     const co2_emission = {
       vslue: 90,
       unit: "kg/MWh",
@@ -289,60 +279,14 @@ const get_dashboard = async () => {
       unit: "%",
     };
 
-    const security_alerts = [
-      {
-        id: 1,
-        is_read: false,
-        timestamp: "2023-12-17T04:26:04.643+00:00",
-        ip: "192.168.1.105",
-        description: "Detected attempt to perform SQL injection",
-      },
-      {
-        id: 2,
-        is_read: false,
-        timestamp: "2023-12-17T04:26:04.643+00:00",
-        ip: "192.168.1.215",
-        description: "Suspicious script detected in input",
-      },
-      {
-        id: 3,
-        is_read: false,
-        timestamp: "2023-12-17T04:26:04.643+00:00",
-        ip: "192.168.1.135",
-        description: "Multiple failed login attempts",
-      },
-      {
-        id: 4,
-        is_read: false,
-        timestamp: "2023-12-17T04:26:04.643+00:00",
-        ip: "192.168.1.185",
-        description: "System configuration changed",
-      },
-      {
-        id: 5,
-        is_read: false,
-        timestamp: "2023-12-17T04:26:04.643+00:00",
-        ip: "192.168.1.250",
-        description: "Detected attempt to spoof DNS responses",
-      },
-    ];
-    const system_health: any = [];
-    const honeypot_detection: any = [];
-
     return {
       success: true,
       utility_status,
       grid_status,
       weekly_data,
       active_components,
-      ids,
-      firewall,
-      honeypot,
       co2_emission,
       energy_efficiency,
-      security_alerts,
-      system_health,
-      honeypot_detection,
     };
   } catch (err) {
     console.error(err);
@@ -350,10 +294,4 @@ const get_dashboard = async () => {
   }
 };
 
-export {
-  get_utility_grid_status,
-  get_grid_status,
-  get_weekly_data,
-  active_counts,
-  get_dashboard,
-};
+export { get_dashboard };
