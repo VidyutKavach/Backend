@@ -7,8 +7,21 @@ import { json, urlencoded } from "body-parser";
 import rateLimit from "express-rate-limit";
 import logger from "morgan";
 import router from "./router/index";
+require("./config/mqtt");
 
 const app = express();
+//Cors Policy
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    allowedHeaders: [
+      "Access-Control-Allow-Origin",
+      "Access-Control-Allow-Methods",
+      "Access-Control-Allow-Headers",
+    ],
+  })
+);
 const PORT = process.env.PORT || 5000;
 dbConnect();
 

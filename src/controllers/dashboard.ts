@@ -10,31 +10,28 @@ import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 
-const get_utility_grid_status = async (req: Request, res: Response) => {
+const get_utility_grid_status = async () => {
   try {
     const utility_data = await ComponentMetricInstant.findOne({
       componentID: "UTILITY",
     })
       .sort({ createdAt: -1 })
       .exec();
-    return res.status(200).json({
+    return {
       success: true,
       data: utility_data?.status,
-    });
+    };
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    return;
   }
 };
 
-const get_grid_status = async (req: Request, res: Response) => {
+const get_grid_status = async () => {
   try {
     const result = await ComponentMetricInstant.aggregate([
       {
-        $sort: { createdAt: -1 },
+        $sort: { time: -1 },
       },
       {
         $group: {
@@ -62,6 +59,7 @@ const get_grid_status = async (req: Request, res: Response) => {
         },
       },
     ]);
+    console.log(result);
 
     const maxStorageCapacity = await Component.aggregate([
       {
@@ -87,33 +85,31 @@ const get_grid_status = async (req: Request, res: Response) => {
         },
       },
     ]);
+    console.log("maxStorageCapacity", maxStorageCapacity);
 
     const totalCapacity = maxStorageCapacity[0].totalStorageCapacity;
 
     const storageType = result.find((item) => item._id === "storage");
+    console.log(storageType);
 
-    const dividedValue = storageType
-      ? (storageType.totalValue / totalCapacity) * 100
-      : 0;
-
+    let dividedValue = 0;
     if (storageType) {
-      storageType.totalValue = dividedValue;
+      dividedValue = (storageType.totalValue / totalCapacity) * 100;
+      // Format to 2 decimal places
+      storageType.totalValue = Number(dividedValue.toFixed(2));
     }
 
-    return res.status(200).json({
+    return {
       success: true,
       data: result,
-    });
+    };
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    return;
   }
 };
 
-const get_weekly_data = async (req: Request, res: Response) => {
+const get_weekly_data = async () => {
   try {
     const result = await Type.aggregate([
       {
@@ -183,20 +179,17 @@ const get_weekly_data = async (req: Request, res: Response) => {
         },
       },
     ]);
-    return res.status(200).json({
+    return {
       success: true,
       data: result,
-    });
+    };
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    return;
   }
 };
 
-const active_counts = async (req: Request, res: Response) => {
+const active_counts = async () => {
   try {
     const activeCounts = await Type.aggregate([
       {
@@ -255,38 +248,31 @@ const active_counts = async (req: Request, res: Response) => {
         },
       },
     ]);
-    return res.status(200).json({
+    return {
       success: true,
       data: activeCounts,
-    });
+    };
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    return;
   }
 };
 
-const get_dashboard = async (req: Request, res: Response) => {
+const get_dashboard = async () => {
   try {
-    const utility_status_response = await axios.get(
-      `${process.env.DEPLOYMENT}/dashboard/get_utility_status`
-    );
-    const grid_status_response = await axios.get(
-      `${process.env.DEPLOYMENT}/dashboard/get_grid_status`
-    );
-    const weekly_data_response = await axios.get(
-      `${process.env.DEPLOYMENT}/dashboard/get_weekly_data`
-    );
-    const active_components_response = await axios.get(
-      `${process.env.DEPLOYMENT}/dashboard/active_count`
-    );
+    const utility_status_response = await get_utility_grid_status();
+    const grid_status_response = await get_grid_status();
+    const weekly_data_response = await get_weekly_data();
+    const active_components_response = await active_counts();
 
-    const utility_status = utility_status_response.data;
-    const grid_status = grid_status_response.data;
-    const weekly_data = weekly_data_response.data;
-    const active_components = active_components_response.data;
+    const utility_status = utility_status_response
+      ? utility_status_response.data
+      : {};
+    const grid_status = grid_status_response ? grid_status_response.data : {};
+    const weekly_data = weekly_data_response ? weekly_data_response.data : {};
+    const active_components = active_components_response
+      ? active_components_response.data
+      : {};
     const ids = "active";
     const firewall = "active";
     const honeypot = {
@@ -343,7 +329,7 @@ const get_dashboard = async (req: Request, res: Response) => {
     const system_health: any = [];
     const honeypot_detection: any = [];
 
-    return res.status(200).json({
+    return {
       success: true,
       utility_status,
       grid_status,
@@ -357,13 +343,10 @@ const get_dashboard = async (req: Request, res: Response) => {
       security_alerts,
       system_health,
       honeypot_detection,
-    });
+    };
   } catch (err) {
     console.error(err);
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
+    return;
   }
 };
 
