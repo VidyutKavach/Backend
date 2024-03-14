@@ -56,7 +56,7 @@ setTimeout(async () => {
   io.emit(JSON.stringify(dashboard));
   const grid_status = await grid_monitor();
   io.emit("grid_monitor", grid_status);
-}, 60000); //1 minute
+}, 5000); //1 minute
 
 // Middleware for handling 404 errors
 app.use((req, res, next) => {
