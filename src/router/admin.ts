@@ -1,5 +1,5 @@
 import express from "express";
-const admin = express.Router();
+const router = express.Router();
 import { body } from "express-validator";
 import {
   add_privilege,
@@ -13,14 +13,15 @@ import {
   isCorrectRole,
   validateRequest,
 } from "../middlewares/reqValidator";
+import { signUp, verifyCredentials } from "../controllers/user_auth";
 
-admin.get(
+router.get(
   "/get_privileges",
   // checkToken, check_admin,
   get_privileges
 );
 
-admin.post(
+router.post(
   "/add_privilege",
   // checkToken, check_admin,
   [body("name", "name is required").exists().isString()],
@@ -28,7 +29,7 @@ admin.post(
   add_privilege
 );
 
-admin.post(
+router.post(
   "/add_role",
   // checkToken, check_admin,
   [
@@ -39,6 +40,31 @@ admin.post(
   add_role
 );
 
-admin.get("/get_roles", get_roles);
+router.get("/get_roles", get_roles);
 
-export default admin;
+router.post(
+  "/signup",
+  // checkToken, check_admin,
+  [
+    body("empID", "Employee ID missing.")
+      .exists()
+      .isString()
+      .custom(isEmpIdUnique),
+    body("username", "Name should be at least 5 characters.")
+      .exists()
+      .isString()
+      .isLength({ min: 5 }),
+    body("email", "Email is required.")
+      .exists()
+      .isEmail()
+      .custom(isEmailUnique),
+    body("role", "Role is not specified.").exists().isString(),
+    body("password", "Password should be at least 2 characters.")
+      .exists()
+      .isLength({ min: 6 }),
+  ],
+  validateRequest,
+  signUp
+);
+
+export default router;
