@@ -14,7 +14,7 @@ const app = express();
 //Cors Policy
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: [
       "Access-Control-Allow-Origin",

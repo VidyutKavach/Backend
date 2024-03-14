@@ -22,7 +22,7 @@ interface SocketServerOptions {
 // Initialize Socket.IO server with CORS options
 const socketServerOptions: SocketServerOptions = {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: [
       "Access-Control-Allow-Origin",
