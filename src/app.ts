@@ -6,6 +6,7 @@ import cors from "cors";
 import { json, urlencoded } from "body-parser";
 import rateLimit from "express-rate-limit";
 import logger from "morgan";
+import router from "./router/index";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,5 +21,6 @@ app.use(limiter);
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(logger("dev"));
+app.use("/", router);
 
 export default app;
