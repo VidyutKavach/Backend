@@ -53,10 +53,10 @@ app.get("/", async (req, res) => {
 
 setTimeout(async () => {
   const dashboard = await get_dashboard();
-  io.emit(JSON.stringify(dashboard));
+  io.emit("dashboard", JSON.stringify(dashboard));
   const grid_status = await grid_monitor();
-  io.emit("grid_monitor", grid_status);
-}, 5000); //1 minute
+  io.emit("grid_monitor", JSON.stringify(grid_status));
+}, 5000); //5 sec
 
 // Middleware for handling 404 errors
 app.use((req, res, next) => {
