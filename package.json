@@ -1,0 +1,60 @@
+{
+  "name": "vidyutkavach_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/build/socket.js",
+  "scripts": {
+    "test": "npm start",
+    "start": "node ./build/socket.js",
+    "build": "npx tsc",
+    "dev": " ts-node-dev ./src/socket.ts"
+  },
+  "keywords": [
+    "typescript",
+    "express",
+    "nodejs",
+    "mongodb"
+  ],
+  "author": "Gracy Gupta",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.11.27",
+    "axios": "^1.6.7",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-rate-limit": "^7.2.0",
+    "http": "^0.0.1-security",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45",
+    "mongoose": "^8.2.1",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.12",
+    "qrcode": "^1.5.3",
+    "socket.io": "^4.7.4",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.21",
+    "@types/express-rate-limit": "^6.0.0",
+    "@types/http-errors": "^2.0.4",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/moment": "^2.13.0",
+    "@types/moment-timezone": "^0.5.30",
+    "@types/mongoose": "^5.11.97",
+    "@types/morgan": "^1.9.9",
+    "@types/nodemailer": "^6.4.14",
+    "@types/qrcode": "^1.5.5",
+    "@types/socket.io": "^3.0.2"
+  }
+}
