@@ -9,7 +9,8 @@ let io: SocketServer;
 
 // Type definition for CORS options
 interface CorsOptions {
-  origin: string;
+  origin: string[];
+  // credentials: boolean;
   methods: string[];
   allowedHeaders: string[];
 }
@@ -22,7 +23,7 @@ interface SocketServerOptions {
 // Initialize Socket.IO server with CORS options
 const socketServerOptions: SocketServerOptions = {
   cors: {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: [
       "Access-Control-Allow-Origin",

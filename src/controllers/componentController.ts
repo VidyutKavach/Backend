@@ -266,7 +266,6 @@ const getLogsForGraph = async (req: Request, res: Response) => {
       },
     ];
     const result = await ComponentMetricHourly.aggregate(pipeline);
-    console.log(result);
     return res.status(200).json({
       success: true,
       data: result,
@@ -343,7 +342,6 @@ const grid_monitor = async () => {
         },
       },
     ]);
-    console.log("result:", result);
     if (result) {
       return { success: true, data: result };
     }

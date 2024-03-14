@@ -41,19 +41,19 @@ client.on("error", (err) => {
 });
 
 // MQTT client close handler
-client.on("close", () => {
-  console.log("MQTT client connection closed");
-});
+// client.on("close", () => {
+//   console.log("MQTT client connection closed");
+// });
 
-// MQTT client offline handler
-client.on("offline", () => {
-  console.log("MQTT client is offline");
-});
+// // MQTT client offline handler
+// client.on("offline", () => {
+//   console.log("MQTT client is offline");
+// });
 
-// MQTT client reconnect handler
-client.on("reconnect", () => {
-  console.log("MQTT client reconnecting...");
-});
+// // MQTT client reconnect handler
+// client.on("reconnect", () => {
+//   console.log("MQTT client reconnecting...");
+// });
 
 // Publish a message after a delay
 // setTimeout(() => {

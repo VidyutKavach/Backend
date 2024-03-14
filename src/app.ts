@@ -14,13 +14,7 @@ const app = express();
 //Cors Policy
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-    allowedHeaders: [
-      "Access-Control-Allow-Origin",
-      "Access-Control-Allow-Methods",
-      "Access-Control-Allow-Headers",
-    ],
+    origin: "*",
   })
 );
 const PORT = process.env.PORT || 5000;
@@ -31,8 +25,10 @@ const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
   max: 2500, // limit each IP to 4 requests per windowMs
 });
+app.set("trust proxy", 1);
 app.use(limiter);
 app.use(json());
+// app.use(cors({ origin: "*" }));
 app.use(urlencoded({ extended: true }));
 app.use(logger("dev"));
 app.use("/", router);
