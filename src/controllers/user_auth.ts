@@ -5,6 +5,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import * as QRCode from "qrcode";
 import AccessLog from "../models/access_logs";
+import { decrypt, encrypt } from "../middlewares/encryption";
 import moment from "moment-timezone";
 
 const SECRET_KEY = process.env.SECRET_KEY || "vidyut";
@@ -74,7 +75,12 @@ const signUp = async (req: Request, res: Response) => {
           role: role,
         };
         const updatedqrInfo = JSON.stringify(qrInfo);
-        generateQRCode(updatedqrInfo)
+        const encryptedData = encrypt(updatedqrInfo);
+        const decryptedData = decrypt(encryptedData);
+        console.log("updatedqrInfo:", updatedqrInfo);
+        console.log("encryptedData:", encryptedData);
+        console.log("decryptedData:", decryptedData);
+        generateQRCode(encryptedData)
           .then((url) => {
             return res.status(200).json({
               success: true,
@@ -176,7 +182,6 @@ const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
           role: role?.name,
           username: user.username,
           token: token,
-          otp: generatedOtp,
         });
       } else {
         await AccessLog.create({
